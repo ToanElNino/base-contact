@@ -1,7 +1,5 @@
 import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-
 // import {routes} from 'src/commons/routes';
 
 // interface Props{
@@ -10,6 +8,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 interface Props {
   placeHolder: string | undefined;
   isFocused: boolean | undefined;
+  state: any;
+  setFunction: any;
 }
 const DetailInput = (props: Props) => {
   return (
@@ -19,6 +19,8 @@ const DetailInput = (props: Props) => {
           autoFocus={props.isFocused}
           placeholder={props.placeHolder}
           style={styles.input}
+          value={props.state}
+          onChangeText={text => props.setFunction(text)}
           placeholderTextColor={'#BDBDBD'}
         />
       </View>

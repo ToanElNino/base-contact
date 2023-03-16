@@ -74,6 +74,9 @@ function AddContactScreen(props: Props): JSX.Element {
     'Số 12, Khuất Duy Tiến, Thanh Xuân, Hà Nội',
   ]);
   const [birthdayList, setBirthdayList] = useState([]);
+  const [firstName, setFirstName] = useState('');
+  const [familyName, setFamilyName] = useState('');
+  const [company, setCompany] = useState('');
 
   return (
     <Container>
@@ -96,9 +99,24 @@ function AddContactScreen(props: Props): JSX.Element {
           </AvatarImage>
         </AvatarContainer>
         <TextInputGroup>
-          <DetailInput placeHolder="Họ" isFocused={true} />
-          <DetailInput placeHolder="Tên" isFocused={false} />
-          <DetailInput placeHolder="Công ty" isFocused={false} />
+          <DetailInput
+            placeHolder="Họ"
+            isFocused={true}
+            state={familyName}
+            setFunction={setFamilyName}
+          />
+          <DetailInput
+            placeHolder="Tên"
+            isFocused={false}
+            state={firstName}
+            setFunction={firstName}
+          />
+          <DetailInput
+            placeHolder="Công ty"
+            isFocused={false}
+            state={company}
+            setFunction={setCompany}
+          />
           {/* <ContactTextInput1 placeholder={'Họ'} /> */}
         </TextInputGroup>
         <DynamicInputGroup>

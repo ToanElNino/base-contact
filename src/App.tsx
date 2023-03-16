@@ -41,6 +41,8 @@ import ContactScreen from './screens/home/ConTact';
 import HomeStack from './screens/home';
 import AddContactScreen from './screens/home/AddContact';
 import HistoryDetailScreen from './screens/home/HistoryDetail';
+import {Provider} from 'react-redux';
+import store from "./store";
 
 type SectionProps = PropsWithChildren<{
   title: string;
@@ -63,29 +65,33 @@ function App(): JSX.Element {
   };
 
   return (
-    <NavigationContainer>
-      <RootStack.Navigator
-        initialRouteName="HomeStack"
-        screenOptions={{
-          headerShown: false,
-        }}>
-        <RootStack.Screen name="LoginScreen" component={LoginScreen} />
-        <RootStack.Screen
-          name="AddContactScreen"
-          component={AddContactScreen}
-        />
-        <RootStack.Screen
-          name="HistoryDetailScreen"
-          component={HistoryDetailScreen}
-        />
-        <RootStack.Screen name="HomeStack" component={HomeStack} />
-        {/* <RootStack.Screen
+    <Provider store={store}>
+      <NavigationContainer>
+        <RootStack.Navigator
+          initialRouteName="HomeStack"
+          screenOptions={{
+            headerShown: false,
+          }}>
+          <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+          <RootStack.Screen
+            name="AddContactScreen"
+            component={AddContactScreen}
+          />
+          <RootStack.Screen
+            name="HistoryDetailScreen"
+            component={HistoryDetailScreen}
+          />
+          <RootStack.Screen name="HomeStack" component={HomeStack} />
+          {/* <RootStack.Screen
           name="SelectApp"
           component={SelectApp}
           // initialParams={{userId: user.id}}
         /> */}
-      </RootStack.Navigator>
-    </NavigationContainer>
+        </RootStack.Navigator>
+      </NavigationContainer>
+
+    </Provider>
+
   );
 }
 

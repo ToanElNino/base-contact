@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import styled from 'styled-components/native';
 import Header from '../../../components/common/Header';
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -8,6 +8,7 @@ import {AlphabetList} from 'react-native-section-alphabet-list';
 import {Text, View, Image} from 'react-native';
 import {StyleSheet} from 'react-native';
 import ContactItem from './components/ContactItem';
+import {useDispatch, useSelector} from 'react-redux';
 
 // import AntDesign from 'react-native-vector-icons/AntDesign';
 const customIndex = [
@@ -86,6 +87,10 @@ interface Props {
 }
 
 function ContactScreen(props: Props): JSX.Element {
+  const {contactList} = useSelector((state: any) => state.contactReducer);
+  useEffect(() => {
+    console.log(contactList);
+  }, [contactList]);
   return (
     <Container>
       <Header title="Liên hệ" iconRight={'true'} />
