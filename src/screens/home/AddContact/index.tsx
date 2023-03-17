@@ -1,6 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
+// @ts-ignore
 import styled from 'styled-components/native';
 import {
+  Alert,
   Image,
   ImageBackground,
   StyleSheet,
@@ -10,17 +12,27 @@ import {TextInput} from 'react-native-gesture-handler';
 import {View} from 'react-native';
 import DetailInput from './components/DetailInput';
 import {ScrollView} from 'react-native';
+import {
+  addContact,
+  ContactModel,
+  editContact,
+} from '../../../reducers/contact/contactReducer';
+import {useDispatch} from 'react-redux';
+import uuid from 'react-native-uuid';
+import {ACTION_CONTACT_ADD, ACTION_CONTACT_EDIT} from '../../../constant';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 interface Props1 {
   field: string | undefined;
-  detailList: Array<string> | undefined;
+  detailList: Array<string>;
   setFunction: any;
 }
 const DynamicInput = (props: Props1) => {
   function handleAddDetail() {
+    // @ts-ignore
     let tmp = [...props.detailList, ''];
     console.log(tmp);
     // props.detailList?.push('');
@@ -28,6 +40,7 @@ const DynamicInput = (props: Props1) => {
   }
   function handleRemoveDetail(index: number) {
     console.log(index);
+    // @ts-ignore
     let tmp = props.detailList.filter((e, i) => {
       return i !== index;
     });
@@ -36,6 +49,19 @@ const DynamicInput = (props: Props1) => {
     props.setFunction(tmp);
     // // props.detailList?.push('');
     // props.setFunction(tmp);
+  }
+  function handleChangeIndexInput(text: string, index: number) {
+    // console.log(text);
+    // console.log(index);
+    let tmp = props.detailList.map((e, i) => {
+      if (i === index) {
+        return text;
+      } else {
+        return e;
+      }
+    });
+    props.setFunction(tmp);
+    console.log(tmp);
   }
   return (
     <View style={styles.container}>
@@ -51,6 +77,9 @@ const DynamicInput = (props: Props1) => {
                 placeholder={props.field}
                 style={styles.input}
                 value={e}
+                onChangeText={(text: string) =>
+                  handleChangeIndexInput(text, index)
+                }
               />
             </View>
           ))
@@ -68,24 +97,66 @@ const DynamicInput = (props: Props1) => {
   );
 };
 function AddContactScreen(props: Props): JSX.Element {
-  const [phoneList, setPhoneList] = useState(['0974303650', '0386417319', '']);
-  const [emailList, setEmailList] = useState(['toanquocnguyen@gmail.com']);
-  const [addressList, setAddressList] = useState([
-    'Số 12, Khuất Duy Tiến, Thanh Xuân, Hà Nội',
-  ]);
+  const dispatch = useDispatch();
+  const [phoneList, setPhoneList] = useState([]);
+  const [emailList, setEmailList] = useState([]);
+  const [addressList, setAddressList] = useState([]);
   const [birthdayList, setBirthdayList] = useState([]);
-  const [firstName, setFirstName] = useState('');
-  const [familyName, setFamilyName] = useState('');
-  const [company, setCompany] = useState('');
+  const [firstName, setFirstName] = useState();
+  const [familyName, setFamilyName] = useState();
+  const [company, setCompany] = useState();
+  const handleGoback = () => {
+    props.navigation.goBack();
+  };
+  const contactItem = props.route.params?.contactItem;
+  const type = props.route.params?.type;
+  console.log(type);
+  console.log(contactItem);
 
+  useEffect(() => {
+    if (type === ACTION_CONTACT_EDIT) {
+      setFamilyName(contactItem?.familyName);
+      setFirstName(contactItem?.firstName);
+      setCompany(contactItem?.company);
+      setPhoneList(contactItem?.phoneList);
+      setAddressList(contactItem?.addressList);
+      setEmailList(contactItem?.emailList);
+      setBirthdayList(contactItem?.birthdayList);
+    }
+  }, []);
+  const handleDone = () => {
+    if (firstName === '' && familyName === '') {
+      Alert.alert('Please enter name');
+    } else {
+      let contact: ContactModel = {
+        phoneList: phoneList,
+        firstName: firstName ?? '',
+        familyName: familyName ?? '',
+        emailList: emailList,
+        addressList: addressList,
+        birthdayList: birthdayList,
+        company: company ?? '',
+        key: uuid.v4().toString(),
+        value: '',
+      };
+      if (type === ACTION_CONTACT_EDIT) {
+        dispatch(editContact(contact));
+      }
+      if (type === ACTION_CONTACT_ADD) {
+        dispatch(addContact(contact));
+      }
+
+      handleGoback();
+    }
+  };
   return (
     <Container>
       {/* <Header /> */}
       <HeaderButtons>
-        <CancelButton onPress={() => props.navigation.goBack()}>
+        <CancelButton onPress={() => handleGoback()}>
           <CancelButtonText>Hủy</CancelButtonText>
         </CancelButton>
-        <DoneButton>
+        <DoneButton onPress={handleDone}>
           <DoneButtonText>Xong</DoneButtonText>
         </DoneButton>
       </HeaderButtons>
@@ -109,7 +180,7 @@ function AddContactScreen(props: Props): JSX.Element {
             placeHolder="Tên"
             isFocused={false}
             state={firstName}
-            setFunction={firstName}
+            setFunction={setFirstName}
           />
           <DetailInput
             placeHolder="Công ty"

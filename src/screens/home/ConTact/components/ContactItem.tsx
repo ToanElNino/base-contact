@@ -1,16 +1,25 @@
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Image, TouchableOpacity} from 'react-native';
+// @ts-ignore
 import styled from 'styled-components/native';
+import {ACTION_CONTACT_EDIT} from '../../../../constant';
 
 interface ContactItemProps {
+  navigation: any;
   avatar: string | undefined;
   name: string;
   number: string | undefined;
+  contactKey: string;
 }
-
 function ContactItem(props: ContactItemProps) {
+  const handleClickContact = () => {
+    props.navigation.navigate('ContactDetailScreen', {
+      key: props.contactKey,
+      type: ACTION_CONTACT_EDIT,
+    });
+  };
   return (
-    <Container>
+    <Container onPress={() => handleClickContact()}>
       <Image
         source={require('../../../../../assets/contact/contact-avatar.png')}
       />
@@ -23,7 +32,7 @@ function ContactItem(props: ContactItemProps) {
 }
 
 export default ContactItem;
-const Container = styled.View`
+const Container = styled(TouchableOpacity)`
   background-color: white;
   /* align-items: center; */
   /* flex-direction: column; */
@@ -32,6 +41,7 @@ const Container = styled.View`
   align-content: center;
   align-items: center;
   height: 64px;
+  margin-left: 16px;
   /* flex: 1; */
 `;
 const RightContainer = styled.View`

@@ -12,59 +12,25 @@ import Fontisto from 'react-native-vector-icons/Fontisto';
 
 interface Props {
   navigation: any;
-  style: any;
   iconRight: any;
-  cancel: boolean | undefined;
-  cancelHandle: any;
-  onPressLeft: any;
-  color: any;
   title: string | undefined;
-  onPressRight: any;
 }
 export default function Header(props: Props) {
-  const IconRight = props.iconRight;
   return (
-    <View style={[styles.container, props.style]}>
-      {props.cancel ? (
-        <View style={{borderRadius: 20, overflow: 'hidden'}}>
-          <Pressable
-            onPress={props.cancelHandle}
-            android_ripple={{color: '#cecece', borderless: false}}
-            style={{minWidth: 40}}>
-            <Text style={{color: 'black', textAlign: 'center'}}>Hủy</Text>
-          </Pressable>
-        </View>
-      ) : (
-        <TouchableOpacity
-          onPress={() => {
-            if (props.onPressLeft) {
-              props.onPressLeft();
-            }
-            props.navigation.goBack();
-          }}
-          style={{paddingVertical: 13.5, minWidth: 40}}>
-          <Feather name="menu" size={25} />
-        </TouchableOpacity>
-      )}
+    <View style={[styles.container]}>
+      <TouchableOpacity
+        onPress={() => {
+          props.navigation.goBack();
+        }}
+        style={{paddingVertical: 13.5, minWidth: 40}}>
+        <Feather name="menu" size={25} />
+      </TouchableOpacity>
 
-      {props.color ? (
-        <Text
-          // numberOfLines={1}
-          style={{
-            fontWeight: 'bold',
-            fontSize: 24,
-            paddingLeft: 10,
-            color: props.color,
-          }}>
-          {props.title}
-        </Text>
-      ) : (
-        <Text numberOfLines={1} style={styles.text}>
-          {props.title}
-        </Text>
-      )}
+      <Text numberOfLines={1} style={styles.text}>
+        {props.title}
+      </Text>
       {props.iconRight ? (
-        <TouchableOpacity onPress={props.onPressRight}>
+        <TouchableOpacity>
           <Fontisto name="camera" size={20} />
           {/* <IconRight /> */}
         </TouchableOpacity>

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
 import {
@@ -10,21 +10,41 @@ import {
 } from 'react-native';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
+import {useSelector} from 'react-redux';
+import {ContactModel} from '../../../reducers/contact/contactReducer';
+import {ACTION_CONTACT_EDIT} from '../../../constant';
 
 interface Props {
   navigation: any;
+  route: any;
 }
-function HistoryDetailScreen(props: Props): JSX.Element {
+function ContactDetailScreen(props: Props): JSX.Element {
+  let initData: ContactModel = {
+    familyName: '',
+    birthdayList: [],
+    firstName: '',
+    emailList: [],
+    phoneList: [],
+    addressList: [],
+    key: '',
+    value: '',
+    company: '',
+  };
+  const [data, setData] = useState(initData);
+  const {contactList} = useSelector((state: any) => state.contactReducer);
   const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
-
+  // console.log(props.route.params);
+  const {key} = props.route.params;
+  console.log(key);
+  useEffect(() => {
+    let contactItem = contactList.find((e: {key: string}) => e.key === key);
+    // console.log(contactItem);
+    setData(contactItem);
+  }, [contactList, key]);
+  // console.log(contactList);
   return (
     <Container>
-      <StatusBar
-        barStyle="dark-content"
-        // hidden={false}
-        // translucent={true}
-        backgroundColor={'#fffbf6'}
-      />
+      <StatusBar barStyle="dark-content" backgroundColor={'#fffbf6'} />
       <TopView>
         {/* <Header /> */}
         <HeaderButtons statusBarHeight={STATUSBAR_HEIGHT}>
@@ -33,7 +53,13 @@ function HistoryDetailScreen(props: Props): JSX.Element {
               source={require('../../../../assets/history-detail/back-icon.png')}
             />
           </TouchableOpacity>
-          <DoneButton>
+          <DoneButton
+            onPress={() =>
+              props.navigation.navigate('AddContactScreen', {
+                contactItem: data,
+                type: ACTION_CONTACT_EDIT,
+              })
+            }>
             <DoneButtonText>Sửa</DoneButtonText>
           </DoneButton>
         </HeaderButtons>
@@ -47,7 +73,7 @@ function HistoryDetailScreen(props: Props): JSX.Element {
             </AvatarImage>
           </AvatarContainer>
           <NameContainer>
-            <NameText>Nguyễn Tiến Nam</NameText>
+            <NameText>{data.familyName + ' ' + data.firstName}</NameText>
             <DetailText>UI/UX Design</DetailText>
           </NameContainer>
           <FeatureButtonContainer>
@@ -89,7 +115,10 @@ function HistoryDetailScreen(props: Props): JSX.Element {
       <BottomView>
         <Section1>
           <PhoneLabel>Điện thoại</PhoneLabel>
-          <PhoneText>0974303650</PhoneText>
+          {data.phoneList.map((e, index) => {
+            return <PhoneText key={index}>{e}</PhoneText>;
+          })}
+          {/*<PhoneText>0974303650</PhoneText>*/}
         </Section1>
         <Section2>
           <NoteLabel>Ghi chú</NoteLabel>
@@ -110,7 +139,7 @@ function HistoryDetailScreen(props: Props): JSX.Element {
   );
 }
 
-export default HistoryDetailScreen;
+export default ContactDetailScreen;
 const Container = styled(View)`
   background-color: white;
   flex: 1;

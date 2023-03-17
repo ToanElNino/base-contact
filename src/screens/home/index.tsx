@@ -1,5 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  * Sample React Native App
  * https://github.com/facebook/react-native
@@ -9,60 +7,37 @@
 
 import React from 'react';
 import type {PropsWithChildren} from 'react';
-import {NativeModules} from 'react-native';
-import {PermissionsAndroid} from 'react-native';
-import {check, PERMISSIONS, RESULTS} from 'react-native-permissions';
-
-const {CalendarModule} = NativeModules;
 
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
-  Text,
   TouchableOpacity,
   useColorScheme,
-  View,
   Image,
   Animated,
-  Alert,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {Colors} from 'react-native/Libraries/NewAppScreen';
 
-import {createStackNavigator} from '@react-navigation/stack';
-import {NavigationContainer} from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Feather from 'react-native-vector-icons/Feather';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+// @ts-ignore
 import styled from 'styled-components/native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 
-const BottomIconContainer = styled.View`
-  align-items: center;
-  justify-content: center;
-  top: 0;
-`;
-const BottomIconText = styled.Text`
-  color: #3a5bb3;
-  font-size: 12px;
-`;
+// const BottomIconContainer = styled.View`
+//   align-items: center;
+//   justify-content: center;
+//   top: 0;
+// `;
+// const BottomIconText = styled.Text`
+//   color: #3a5bb3;
+//   font-size: 12px;
+// `;
 
 // import LoginScreen from './src/screens/Login';
 import ContactScreen from './ConTact';
 import HistoryScreen from './History';
-import DrawerTabs from "./DrawerTabs";
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+import {ACTION_CONTACT_ADD} from '../../constant';
 
 type RootStackParamList = {
   Contact: any;
@@ -150,7 +125,7 @@ const renderTabBar = ({
     </TouchableOpacity>
   );
 };
-const HomeStackNavigator = createBottomTabNavigator<RootStackParamList>();
+// const HomeStackNavigator = createBottomTabNavigator<RootStackParamList>();
 
 interface StackProp {
   navigation: any;
@@ -159,9 +134,9 @@ interface StackProp {
 function HomeStack({navigation}: StackProp): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  // const backgroundStyle = {
+  //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  // };
 
   return (
     <CurvedBottomBar.Navigator
@@ -176,11 +151,15 @@ function HomeStack({navigation}: StackProp): JSX.Element {
       bgColor={'#F2A54A'}
       initialRouteName="title1"
       borderTopLeftRight
-      renderCircle={({selectedTab, navigate}) => (
+      renderCircle={({navigate}) => (
         <Animated.View style={styles.btnCircleUp}>
           <MiddleIcon
             // style={styles.button}
-            onPress={() => navigation.navigate('AddContactScreen')}>
+            onPress={() =>
+              navigation.navigate('AddContactScreen', {
+                type: ACTION_CONTACT_ADD,
+              })
+            }>
             <IconAdd
               source={require('../../../assets/bottomIcon/add_24px.png')}
             />
@@ -215,7 +194,6 @@ const BottomIconContainer1 = styled.View`
   //justify-content: center;
   //align-content: center;
   align-items: center;
-  //font-weight: 400;
   //font-size: 10px;
   //line-height: 12px;
   //color: #ffffff;
@@ -241,10 +219,10 @@ const NotSelectedText = styled.Text`
   margin-top: 3px;
   color: #ffdaae;
 `;
-const IconLeft = styled(Image)`
-  /* margin-right: 17px; */
-  /* margin-top: 11px; */
-`;
+// const IconLeft = styled(Image)`
+//   /* margin-right: 17px; */
+//   /* margin-top: 11px; */
+// `;
 const IconRight = styled(Image)`
   /* margin-right: 17px; */
   /* margin-top: 11px; */

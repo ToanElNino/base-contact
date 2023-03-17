@@ -12,7 +12,6 @@ interface ContactItemProps {
 }
 
 function HistoryItem(props: ContactItemProps) {
-    console.log('1: ',props.navigation);
   return (
     <Container>
       <LeftContainer>

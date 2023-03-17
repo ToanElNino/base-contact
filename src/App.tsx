@@ -42,17 +42,19 @@ import HomeStack from './screens/home';
 import AddContactScreen from './screens/home/AddContact';
 import HistoryDetailScreen from './screens/home/HistoryDetail';
 import {Provider} from 'react-redux';
-import store from "./store";
+import store from './store';
+import ContactDetailScreen from './screens/home/ContactDetail';
 
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
 
 type RootStackParamList = {
-  LoginScreen: undefined;
-  AddContactScreen: undefined;
-  HomeStack: undefined;
-  HistoryDetailScreen: undefined;
+  LoginScreen: any;
+  AddContactScreen: any;
+  HomeStack: any;
+  HistoryDetailScreen: any;
+  ContactDetailScreen: any;
   // Feed: {sort: 'latest' | 'top'} | undefined;
 };
 const RootStack = createStackNavigator<RootStackParamList>();
@@ -81,6 +83,10 @@ function App(): JSX.Element {
             name="HistoryDetailScreen"
             component={HistoryDetailScreen}
           />
+          <RootStack.Screen
+            name="ContactDetailScreen"
+            component={ContactDetailScreen}
+          />
           <RootStack.Screen name="HomeStack" component={HomeStack} />
           {/* <RootStack.Screen
           name="SelectApp"
@@ -89,9 +95,7 @@ function App(): JSX.Element {
         /> */}
         </RootStack.Navigator>
       </NavigationContainer>
-
     </Provider>
-
   );
 }
 
