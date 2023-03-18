@@ -4,10 +4,12 @@ import styled from 'styled-components/native';
 import Header from '../../../components/common/Header';
 import SearchBar from './components/SearchBar';
 import {AlphabetList} from 'react-native-section-alphabet-list';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 import ContactItem from './components/ContactItem';
 import {useSelector} from 'react-redux';
 
+const {height} = Dimensions.get('screen');
+const listMaxHeight = Math.floor(height - 270);
 const customIndex = [
   'A',
   'B',
@@ -48,11 +50,15 @@ const SearchInputContainer = styled.View`
   margin-right: 5px;
   margin-bottom: 9px;
 `;
-const ContactList = styled.View`
-  //margin: 0px 15px 60px 15px;
-  padding-bottom: 60px;
-  /* padding-left */
-`;
+// const ContactList = styled.View`
+//   //margin: 0px 15px 60px 15px;
+//   //padding-bottom: 60px;
+//   //margin-bottom: 100px;
+//   /* padding-left */
+//   //background-color: red;
+//   //margin-bottom: 55px;
+//   max-height: ${(props: {maxHeight: number; }) => props.maxHeight +'px'};
+// `;
 
 interface Props {
   navigation: any;
@@ -60,7 +66,7 @@ interface Props {
 
 function ContactScreen(props: Props): JSX.Element {
   const {contactList} = useSelector((state: any) => state.contactReducer);
-  console.log('log: ', contactList);
+  // console.log('log: ', contactList);
 
   return (
     <Container>
@@ -72,7 +78,8 @@ function ContactScreen(props: Props): JSX.Element {
       <SearchInputContainer>
         <SearchBar />
       </SearchInputContainer>
-      <ContactList>
+      {/*<ContactList maxHeight={listMaxHeight}>*/}
+      <View style={{maxHeight: listMaxHeight}}>
         <AlphabetList
           data={contactList}
           index={customIndex}
@@ -96,7 +103,9 @@ function ContactScreen(props: Props): JSX.Element {
           indexContainerStyle={{marginRight: 16}}
           indexLetterContainerStyle={{paddingVertical: 10}}
         />
-      </ContactList>
+      </View>
+
+      {/*</ContactList>*/}
     </Container>
   );
 }

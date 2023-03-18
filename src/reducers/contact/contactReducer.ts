@@ -72,17 +72,10 @@ const contactSlice = createSlice({
         value: firstName,
         key,
       };
-      // let updateContactList: ContactModel[] = [];
-      // for (let i = 0; i < state.contactList.length; i++) {
-      //   if (state.contactList[i].key === key) {
-      //     updateContactList.push(updateContact);
-      //   } else {
-      //     updateContactList.push(state.contactList[i]);
-      //   }
-      // }
-      // return updateContactList;
+      console.log('updateContact: ', updateContact);
       let updateContactList = state.contactList.map(e => {
         if (e.key === action.payload.key) {
+          // console.log("matching key");
           return updateContact;
         } else {
           return e;
@@ -90,22 +83,23 @@ const contactSlice = createSlice({
       });
       console.log('update: ', updateContactList);
       // state.contactList.unshift(newContact);
-      return updateContactList;
+      state.contactList = updateContactList;
+      return state;
     },
     getContactByKey: (state, action) => {
       let result = state.contactList.find(e => e.key == action.payload.key);
       console.log(result);
       // return state;
     },
-    // editContact: (state, action) => {
-    //   let {id, title} = action.payload;
-    //   state.tasks = state.tasks.map(task => {
-    //     if (task.id === id) {
-    //       task.title = title;
-    //     }
-    //     return task;
-    //   });
-    // }
+    deleteContact: (state, action) => {
+      console.log('delete action');
+      const {key} = action.payload;
+      console.log('key: ', key);
+      let updateContactList = state.contactList.filter(e => e.key !== key);
+      state.count--;
+      state.contactList = updateContactList;
+      return state;
+    },
   },
 });
 //reducer
@@ -115,6 +109,7 @@ export const contactSelector = (state: {contactReducer: {contactList: any}}) =>
   state.contactReducer.contactList;
 
 // Action
-export const {addContact, editContact, getContactByKey} = contactSlice.actions;
+export const {addContact, editContact, getContactByKey, deleteContact} =
+  contactSlice.actions;
 
 export default contactReducer;

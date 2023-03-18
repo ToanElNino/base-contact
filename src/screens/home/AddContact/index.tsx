@@ -69,9 +69,9 @@ const DynamicInput = (props: Props1) => {
         ? props.detailList.map((e, index) => (
             <View style={styles.additionalDetail} key={index}>
               <TouchableOpacity onPress={() => handleRemoveDetail(index)}>
-                <DeleteImage
-                  source={require('../../../../assets/add-contact/delete-icon.png')}
-                />
+                {/*<DeleteImage*/}
+                {/*  source={require('../../../../assets/add-contact/delete-icon.png')}*/}
+                {/*/>*/}
               </TouchableOpacity>
               <TextInput
                 placeholder={props.field}
@@ -128,21 +128,34 @@ function AddContactScreen(props: Props): JSX.Element {
     if (firstName === '' && familyName === '') {
       Alert.alert('Please enter name');
     } else {
-      let contact: ContactModel = {
-        phoneList: phoneList,
-        firstName: firstName ?? '',
-        familyName: familyName ?? '',
-        emailList: emailList,
-        addressList: addressList,
-        birthdayList: birthdayList,
-        company: company ?? '',
-        key: uuid.v4().toString(),
-        value: '',
-      };
+      // console.log("contact: ", contact);
       if (type === ACTION_CONTACT_EDIT) {
+        let contact: ContactModel = {
+          phoneList: phoneList,
+          firstName: firstName ?? '',
+          familyName: familyName ?? '',
+          emailList: emailList,
+          addressList: addressList,
+          birthdayList: birthdayList,
+          company: company ?? '',
+          key: contactItem.key,
+          value: '',
+        };
+        // contact.key == contactItem.key;
         dispatch(editContact(contact));
       }
       if (type === ACTION_CONTACT_ADD) {
+        let contact: ContactModel = {
+          phoneList: phoneList,
+          firstName: firstName ?? '',
+          familyName: familyName ?? '',
+          emailList: emailList,
+          addressList: addressList,
+          birthdayList: birthdayList,
+          company: company ?? '',
+          key: uuid.v4().toString(),
+          value: '',
+        };
         dispatch(addContact(contact));
       }
 

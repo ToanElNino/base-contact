@@ -6,20 +6,10 @@
  */
 
 import React from 'react';
-import type {PropsWithChildren} from 'react';
 
-import {
-  StyleSheet,
-  TouchableOpacity,
-  useColorScheme,
-  Image,
-  Animated,
-} from 'react-native';
-
-import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {StyleSheet, TouchableOpacity, Image, Animated} from 'react-native';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 // @ts-ignore
 import styled from 'styled-components/native';
 import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
@@ -38,14 +28,14 @@ import {CurvedBottomBar} from 'react-native-curved-bottom-bar';
 import ContactScreen from './ConTact';
 import HistoryScreen from './History';
 import {ACTION_CONTACT_ADD} from '../../constant';
+import {
+  IC_ADD_CONTACT,
+  IC_CONTACT_DISABLE,
+  IC_CONTACT_ENABLE,
+  IC_HISTORY_DISABLE,
+  IC_HISTORY_ENABLE,
+} from '../../../assets';
 
-type RootStackParamList = {
-  Contact: any;
-  History: undefined;
-
-  //   HomeStack: undefined;
-  // Feed: {sort: 'latest' | 'top'} | undefined;
-};
 interface renderIconProps {
   routeName: string | undefined;
   selectedTab: string | undefined;
@@ -59,18 +49,14 @@ const _renderIcon = ({routeName, selectedTab}: renderIconProps) => {
       if (selectedTab === routeName) {
         return (
           <BottomIconContainer1>
-            <IconAdd
-              source={require('../../../assets/bottomIcon/assignment_ind_24px.png')}
-            />
+            <IconAdd source={IC_CONTACT_ENABLE} />
             <SelectedText>Danh bạ</SelectedText>
           </BottomIconContainer1>
         );
       } else {
         return (
           <BottomIconContainer1>
-            <IconAdd
-              source={require('../../../assets/bottomIcon/assignment_ind_24px-disable.png')}
-            />
+            <IconAdd source={IC_CONTACT_DISABLE} />
             <NotSelectedText>Danh bạ</NotSelectedText>
           </BottomIconContainer1>
         );
@@ -80,18 +66,14 @@ const _renderIcon = ({routeName, selectedTab}: renderIconProps) => {
       if (selectedTab === routeName) {
         return (
           <BottomIconContainer1>
-            <IconRight
-              source={require('../../../assets/bottomIcon/history_icon.png')}
-            />
+            <IconRight source={IC_HISTORY_ENABLE} />
             <SelectedText>Gần đây</SelectedText>
           </BottomIconContainer1>
         );
       } else {
         return (
           <BottomIconContainer1>
-            <IconRight
-              source={require('../../../assets/bottomIcon/history_icon_disable.png')}
-            />
+            <IconRight source={IC_HISTORY_DISABLE} />
             <NotSelectedText>Gần đây</NotSelectedText>
           </BottomIconContainer1>
         );
@@ -132,8 +114,6 @@ interface StackProp {
 }
 
 function HomeStack({navigation}: StackProp): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
   // const backgroundStyle = {
   //   backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
   // };
@@ -151,7 +131,7 @@ function HomeStack({navigation}: StackProp): JSX.Element {
       bgColor={'#F2A54A'}
       initialRouteName="title1"
       borderTopLeftRight
-      renderCircle={({navigate}) => (
+      renderCircle={() => (
         <Animated.View style={styles.btnCircleUp}>
           <MiddleIcon
             // style={styles.button}
@@ -160,9 +140,7 @@ function HomeStack({navigation}: StackProp): JSX.Element {
                 type: ACTION_CONTACT_ADD,
               })
             }>
-            <IconAdd
-              source={require('../../../assets/bottomIcon/add_24px.png')}
-            />
+            <IconAdd source={IC_ADD_CONTACT} />
           </MiddleIcon>
         </Animated.View>
       )}
@@ -265,7 +243,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 5,
   },
-  bottomBar: {},
+  bottomBar: {
+    height: 55,
+  },
   btnCircleUp: {
     width: 60,
     height: 60,

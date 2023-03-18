@@ -1,33 +1,54 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 import { TouchableOpacity } from 'react-native';
-import {Image, Text, View} from 'react-native';
+import {Image, View} from 'react-native';
+// @ts-ignore
 import styled from 'styled-components/native';
+import { HistoryModel } from "../../../../reducers/history/historyReducer";
+import { TYPE_INCOMING_CALL } from "../../../../constant";
+import { IC_HISTORY_CALL, IC_HISTORY_INFO, IC_HISTORY_VIDEO_CALL } from "../../../../../assets";
 
 interface ContactItemProps {
-  avatar: string | undefined;
-  name: string;
-  number: string | undefined;
+  item: HistoryModel;
   navigation: any;
 }
 
 function HistoryItem(props: ContactItemProps) {
+  const {item} = props;
+  function handleTime(){
+    let dayList = ["Thứ Hai", "Thứ Ba", "Thứ Tư", "Thứ Năm", "Thứ Sáu", "Thứ Bảy", "Chủ Nhật"];
+    let currentTime = new Date();
+    console.log(currentTime.getFullYear());
+    let date = new Date(item.time);
+    if(currentTime.getFullYear() === date.getFullYear() && currentTime.getMonth() === date.getMonth() && currentTime.getDay() === date.getDay())
+      return "Hôm nay"
+    return dayList[date.getDay()]
+  }
   return (
     <Container>
       <LeftContainer>
-        <IconType
-          source={require('../../../../../assets/history/phone_24px.png')}
-        />
+        {
+          item.type === TYPE_INCOMING_CALL ? (
+            <IconType
+              source={IC_HISTORY_CALL}
+            />
+          ) : (
+            <IconType
+              source={IC_HISTORY_VIDEO_CALL}
+            />
+          )
+
+        }
         <View>
-            <NameText>Nguyễn Tiến Nam</NameText>
-            <NumberText>0974303650</NumberText>
+            <NameText>{item.name}</NameText>
+            <NumberText>{item.phoneNumber}</NumberText>
         </View>
       </LeftContainer>
       <RightContainer>
-        <TimeText>Hôm nay</TimeText>
-        <TouchableOpacity onPress={() =>props.navigation.navigate('HistoryDetailScreen')}>
+        <TimeText>{handleTime()}</TimeText>
+        <TouchableOpacity onPress={() =>props.navigation.navigate('HistoryDetailScreen', {item: item})}>
             <Image
-            source={require('../../../../../assets/history/info_outline_24px_rounded.png')}
+            source={IC_HISTORY_INFO}
             />
         </TouchableOpacity>
       </RightContainer>
@@ -51,7 +72,7 @@ const Container = styled.View`
 const LeftContainer = styled.View`
   background-color: white;
   border-bottom-width: 0.5px;
-  border-bottom-color: solid rgba(0, 0, 0, 0.1);
+  border-bottom-color:  rgba(0, 0, 0, 0.1);
   padding-left: 16px;
   height: 64px;
   align-self: center;
@@ -65,7 +86,7 @@ const LeftContainer = styled.View`
 const RightContainer = styled.View`
   background-color: white;
   border-bottom-width: 0.5px;
-  border-bottom-color: solid rgba(0, 0, 0, 0.1);
+  border-bottom-color:  rgba(0, 0, 0, 0.1);
   padding-left: 16px;
   height: 64px;
   align-self: center;

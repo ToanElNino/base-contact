@@ -2,65 +2,18 @@ import React from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
 import Header from '../../../components/common/Header';
-import {VirtualizedList, StatusBar} from 'react-native';
+import {StatusBar, FlatList} from 'react-native';
 // import {StyleSheet} from 'react-native';
 import HistoryItem from './components/HistoryItem';
-
-// import AntDesign from 'react-native-vector-icons/AntDesign';
-const HistoryListData = [
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-
-  {type: 1, name: 'Nguyễn Tiến Nam', number: '0974303650', time: 'Hôm nay'},
-];
-const Container = styled.View`
-  background-color: white;
-  /* align-items: center; */
-  flex-direction: column;
-  /* align-items: center; */
-  flex: 1;
-`;
-
-const HistoryList = styled.View`
-  margin: 8px 15px 0px 15px;
-  /* padding-left */
-`;
-
+import {useSelector} from 'react-redux';
+import {HistoryModel} from '../../../reducers/history/historyReducer';
 interface Props {
   navigation: any;
 }
-
-interface PropItem {
-  id: number | undefined;
-}
-interface PropItemCount {
-  data: any;
-}
-
-// const getItemCount = (data: PropItemCount) => 15;
-
 function HistoryScreen(props: Props): JSX.Element {
-  // console.log(props.navigation)
-  const renderItem = (item: PropItem) => (
-    <HistoryItem item={item} key={item.id} navigation={props.navigation} />
-  );
+  const {historyList} = useSelector((state: any) => state.historyReducer);
+  console.log(historyList);
+
   return (
     <Container>
       <StatusBar
@@ -75,13 +28,13 @@ function HistoryScreen(props: Props): JSX.Element {
         navigation={props.navigation}
       />
       <HistoryList>
-        <VirtualizedList
+        <FlatList
           showsVerticalScrollIndicator={false}
-          data={HistoryListData}
-          getItem={() => 9}
-          getItemCount={() => 9}
-          renderItem={renderItem}
-          keyExtractor={(item, index) => index}
+          data={historyList}
+          keyExtractor={(item: HistoryModel) => item.key}
+          renderItem={({item}) => (
+            <HistoryItem item={item} navigation={props.navigation} />
+          )}
         />
       </HistoryList>
     </Container>
@@ -90,12 +43,12 @@ function HistoryScreen(props: Props): JSX.Element {
 
 export default HistoryScreen;
 
-// const styles = StyleSheet.create({
-//   indexLetterStyle: {
-//     color: '#F2A54A',
-//     fontSize: 13,
-//     lineHeight: 22,
-//     fontWeight: '400',
-//     height: 30,
-//   },
-// });
+const Container = styled.View`
+  background-color: white;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const HistoryList = styled.View`
+  margin: 8px 15px 0px 15px;
+`;

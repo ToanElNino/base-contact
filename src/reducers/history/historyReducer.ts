@@ -9,6 +9,7 @@ export interface HistoryModel {
   time: string;
   type: number;
   note: string | null;
+  key: string;
 }
 const initialState: {count: number; historyList: HistoryModel[]} = {
   count: 0,
@@ -22,7 +23,8 @@ const historySlice = createSlice({
     addHistory: (state, action) => {
       console.log('action: ', action);
       state.count++;
-      let {phoneNumber, name, contactId, time, type, note} = action.payload;
+      let {phoneNumber, name, contactId, time, type, note, key} =
+        action.payload;
       const newHistory: HistoryModel = {
         phoneNumber,
         name,
@@ -30,6 +32,7 @@ const historySlice = createSlice({
         time,
         type,
         note,
+        key,
       };
       state.historyList.unshift(newHistory);
       return state;

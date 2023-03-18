@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 // @ts-ignore
 import styled from 'styled-components/native';
 import {
@@ -13,10 +13,48 @@ import {ScrollView} from 'react-native';
 
 interface Props {
   navigation: any;
+  route: any;
 }
 function HistoryDetailScreen(props: Props): JSX.Element {
   const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : StatusBar.currentHeight;
-
+  const {item} = props.route.params;
+  const [note, setNote] = useState('');
+  console.log(item);
+  function handleDay() {
+    let dayList = [
+      'Thứ Hai',
+      'Thứ Ba',
+      'Thứ Tư',
+      'Thứ Năm',
+      'Thứ Sáu',
+      'Thứ Bảy',
+      'Chủ Nhật',
+    ];
+    let currentTime = new Date();
+    console.log(currentTime.getFullYear());
+    let date = new Date(item.time);
+    if (
+      currentTime.getFullYear() === date.getFullYear() &&
+      currentTime.getMonth() === date.getMonth() &&
+      currentTime.getDay() === date.getDay()
+    ) {
+      return 'Hôm nay';
+    }
+    return dayList[date.getDay()];
+  }
+  function handleTime() {
+    let date = new Date(item.time);
+    return (
+      date.getHours() +
+      ':' +
+      date.getMinutes() +
+      ' ngày ' +
+      date.getDay() +
+      ' ' +
+      'tháng ' +
+      date.getMonth()
+    );
+  }
   return (
     <Container>
       <StatusBar
@@ -47,7 +85,7 @@ function HistoryDetailScreen(props: Props): JSX.Element {
             </AvatarImage>
           </AvatarContainer>
           <NameContainer>
-            <NameText>Nguyễn Tiến Nam</NameText>
+            <NameText>{item.name}</NameText>
             <DetailText>UI/UX Design</DetailText>
           </NameContainer>
           <FeatureButtonContainer>
@@ -87,13 +125,20 @@ function HistoryDetailScreen(props: Props): JSX.Element {
         </ScrollView>
       </TopView>
       <BottomView>
+        <Section0>
+          <DateLabel>{handleDay()}</DateLabel>
+          <TimeLabel>{handleTime()}</TimeLabel>
+        </Section0>
         <Section1>
           <PhoneLabel>Điện thoại</PhoneLabel>
-          <PhoneText>0974303650</PhoneText>
+          <PhoneText>{item.phoneNumber}</PhoneText>
         </Section1>
         <Section2>
           <NoteLabel>Ghi chú</NoteLabel>
-          <NoteText placeHolder={'Thêm ghi chú'} />
+          <NoteText
+            placeHolder={'Thêm ghi chú'}
+            onChangeText={(text: string) => setNote(text)}
+          />
         </Section2>
         <Section3>
           <SendMessageButton>
@@ -263,6 +308,26 @@ const PhoneText = styled.Text`
   padding-bottom: 2px;
 `;
 
+const Section0 = styled.View`
+  border-bottom-width: 0.5px;
+  border-bottom-color: rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  height: 64px;
+`;
+const DateLabel = styled.Text`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 22px;
+  color: #333333;
+  margin-bottom: 3px;
+`;
+const TimeLabel = styled.Text`
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 22px;
+  color: #333333;
+  margin-bottom: 3px;
+`;
 const Section2 = styled.View`
   border-bottom-width: 0.5px;
   border-bottom-color: rgba(0, 0, 0, 0.1);

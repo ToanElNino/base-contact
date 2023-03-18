@@ -10,15 +10,27 @@ import {
 } from 'react-native';
 import {View} from 'react-native';
 import {ScrollView} from 'react-native';
-import {useSelector} from 'react-redux';
-import {ContactModel} from '../../../reducers/contact/contactReducer';
+import {useDispatch, useSelector} from 'react-redux';
+import {
+  ContactModel,
+  deleteContact,
+} from '../../../reducers/contact/contactReducer';
 import {ACTION_CONTACT_EDIT} from '../../../constant';
+import {
+  IC_CAMERA_PICKER,
+  IC_FEATURE_BUTTON_CALL,
+  IC_FEATURE_BUTTON_FACETIME,
+  IC_FEATURE_BUTTON_MAIL,
+  IC_FEATURE_BUTTON_TEXT,
+  IC_HEADER_BACK,
+} from '../../../../assets';
 
 interface Props {
   navigation: any;
   route: any;
 }
 function ContactDetailScreen(props: Props): JSX.Element {
+  const dispatch = useDispatch();
   let initData: ContactModel = {
     familyName: '',
     birthdayList: [],
@@ -42,6 +54,10 @@ function ContactDetailScreen(props: Props): JSX.Element {
     setData(contactItem);
   }, [contactList, key]);
   // console.log(contactList);
+  function handleDeleteContact() {
+    dispatch(deleteContact({key: data.key}));
+    props.navigation.goBack();
+  }
   return (
     <Container>
       <StatusBar barStyle="dark-content" backgroundColor={'#fffbf6'} />
@@ -49,9 +65,7 @@ function ContactDetailScreen(props: Props): JSX.Element {
         {/* <Header /> */}
         <HeaderButtons statusBarHeight={STATUSBAR_HEIGHT}>
           <TouchableOpacity onPress={() => props.navigation.goBack()}>
-            <BackIcon
-              source={require('../../../../assets/history-detail/back-icon.png')}
-            />
+            <BackIcon source={IC_HEADER_BACK} />
           </TouchableOpacity>
           <DoneButton
             onPress={() =>
@@ -67,9 +81,7 @@ function ContactDetailScreen(props: Props): JSX.Element {
           <AvatarContainer>
             <AvatarImage
               source={require('../../../../assets/history-detail/avatar.png')}>
-              <CameraImage
-                source={require('../../../../assets/add-contact/camera.png')}
-              />
+              <CameraImage source={IC_CAMERA_PICKER} />
             </AvatarImage>
           </AvatarContainer>
           <NameContainer>
@@ -79,33 +91,25 @@ function ContactDetailScreen(props: Props): JSX.Element {
           <FeatureButtonContainer>
             <View>
               <ButtonBackground>
-                <CallIcon
-                  source={require('../../../../assets/history-detail/call-icon.png')}
-                />
+                <CallIcon source={IC_FEATURE_BUTTON_CALL} />
               </ButtonBackground>
               <FeatureText>Gọi điện</FeatureText>
             </View>
             <View>
               <ButtonBackground>
-                <CallIcon
-                  source={require('../../../../assets/history-detail/chat_bubble_24px_rounded.png')}
-                />
+                <CallIcon source={IC_FEATURE_BUTTON_TEXT} />
               </ButtonBackground>
               <FeatureText>Nhắn tin</FeatureText>
             </View>
             <View>
               <ButtonBackground>
-                <CallIcon
-                  source={require('../../../../assets/history-detail/missed_video_call_24px.png')}
-                />
+                <CallIcon source={IC_FEATURE_BUTTON_FACETIME} />
               </ButtonBackground>
               <FeatureText>Facetime</FeatureText>
             </View>
             <View>
               <ButtonBackground1>
-                <CallIcon
-                  source={require('../../../../assets/history-detail/email_24px_rounded.png')}
-                />
+                <CallIcon source={IC_FEATURE_BUTTON_MAIL} />
               </ButtonBackground1>
               <FeatureText1>Gửi mail</FeatureText1>
             </View>
@@ -130,7 +134,7 @@ function ContactDetailScreen(props: Props): JSX.Element {
           </SendMessageButton>
         </Section3>
         <Section4>
-          <DeleteButton>
+          <DeleteButton onPress={() => handleDeleteContact()}>
             <DeleteText>Xóa người gọi</DeleteText>
           </DeleteButton>
         </Section4>

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  Dimensions,
-  TouchableOpacityBase,
-} from 'react-native';
+// @ts-ignore
 import styled from 'styled-components/native';
 
 // import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -120,18 +114,18 @@ function LoginScreen(props: Props): JSX.Element {
   return (
     <Container>
       <TopContainer>
-        <LogoImage1
+        {/* <LogoImage1
           source={require('../../../assets/login/login-logo-1.png')}
-        />
-        <LogoImage2 source={require('../../../assets/login/login-logo.png')} />
+        /> */}
+        {/* <LogoImage2 source={require('../../../assets/login/login-logo.png')} /> */}
       </TopContainer>
       <BottomContainer>
         <AppNameTitle>Base wework</AppNameTitle>
         <AppNameDetail>Giải pháp quản lý công việc</AppNameDetail>
         <AppNameDetail>& dự án toàn diện cho doanh nghiệp 4.0</AppNameDetail>
-        <LogoImage3
+        {/* <LogoImage3
           source={require('../../../assets/login/login-logo-3.png')}
-        />
+        /> */}
         <LoginStateText>Bạn chưa đăng nhập</LoginStateText>
         <BaseLoginButton onPress={() => props.navigation.navigate('HomeStack')}>
           <BaseLoginButtonText>ĐĂNG NHẬP BẰNG BASE ACCOUNT</BaseLoginButtonText>

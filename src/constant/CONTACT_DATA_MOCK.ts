@@ -1,4 +1,4 @@
-import { ContactModel } from "../reducers/contact/contactReducer";
+import {ContactModel} from '../reducers/contact/contactReducer';
 
 export const INIT_CONTACT_LIST: ContactModel[] = [
   {
